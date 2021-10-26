@@ -21,7 +21,14 @@ SRCS = ft_isalpha.c \
 		ft_strnstr.c \
 		ft_atoi.c \
 		ft_calloc.c \
-		ft_strdup.c
+		ft_strdup.c \
+		ft_putnbr_fd.c \
+		ft_putchar_fd.c \
+		ft_putstr_fd.c \
+		ft_putendl_fd.c \
+		ft_substr.c \
+		ft_strjoin.c \
+		ft_strtrim.c
 
 OBJ=$(SRCS:.c=.o)
 

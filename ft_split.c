@@ -60,6 +60,8 @@ char	**ft_split(char const	*s, char	c)
 	int		i;
 	int		k;
 
+	if (!s || !c)
+		return (NULL);
 	n = ft_count_word(s, c);
 	a = (char **) malloc(n * sizeof(char *));
 	w = (int *)malloc(n * sizeof(int));
