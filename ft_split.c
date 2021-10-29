@@ -1,5 +1,5 @@
 #include "libft.h"
-#include <stdio.h>
+
 static int	ft_count_word(const char	*s, int	c)
 {
 	int	k;
@@ -20,76 +20,55 @@ static int	ft_count_word(const char	*s, int	c)
 	return (k);
 }
 
-static int	*ft_wlen(const char	*s, int	c, int	n)
+static int	ft_wlen(const char	*s, char	c)
 {
-	int	k;
-	int	*b;
-	int	i;
+	int	b;
 
-	b = (int *)malloc(n * sizeof(int));
-	k = 0;
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] != c)
-		{
-			b[k] = 0;
-			while (s[i] != c)
-			{
-				b[k]++;
-				i++;
-			}
-			k++;
-		}
-		i++;
-	}
-	/*i = 0;
-	while (i < n)
-	{
-		printf("b[%d] = %d\n", i, b[i]);
-		i++;
-	}*/
+	b = 0;
+	while(s[b] != c && s[b])
+		b++;
 	return (b);
 }
 
-char	**ft_split(char const	*s, char	c)
+static char	**ft_msplit(char const	*s, char	c, int	i, char	**a)
 {
-	char	**a;
-	int		*w;
-	int		n;
-	int		i;
-	int		k;
+	size_t	j;
 
-	if (!s || !c)
-		return (NULL);
-	n = ft_count_word(s, c);
-	a = (char **) malloc(n * sizeof(char *));
-	w = (int *)malloc(n * sizeof(int));
-	w = ft_wlen(s, c, n);
-	i = 0;
-	while (i < n)
-	{
-		a[i] = (char *)malloc(w[i]*sizeof(char) + 1);
-		i++;
-	}
-	i = 0;
-	k = 0;
+	j = 0;
 	while (s[i])
 	{
-		if (s[i] != c )
+		a[i] = (char *)malloc((ft_wlen(s + i, c) + 1)*sizeof(char));
+		if (!a[i])
 		{
-			ft_strlcpy(a[k], &s[i], w[k]+1);
-			a[k][w[k] + 1] = '\0';
-			i += w[k];
-			k++;
+			while (*(a + j))
+				free(a[j--]);
+			free(a);
+			return (NULL);
 		}
-		i++;
+		ft_bzero(a[j], ft_wlen(s + i, c) + 1);
+		ft_strlcat(a[j], s + i, (size_t)ft_wlen(s + i, c) + 1);
+		i += ft_wlen(s + i, c);
+		j++;
+		while (s[i] && s[i] == c && c != '\0')
+			i++;
 	}
+	a[j] = NULL;
 	return (a);
-}/*
+}
 
-int main(void)
+char	**ft_split(char const *s, char c)
 {
-	ft_split("     b bqwer asf   sdf    adsfad dfssgd ,,, , .,. ", ' ');
-	return 0;
-}*/
+	char	**a;
+	int		i;
+
+	if (!s)
+		return (NULL);
+	a = (char **)malloc(sizeof(char *) * (ft_count_word(s, c) + 1));
+	if (!a)
+		return (NULL);
+	i = 0;
+		return (a);
+	while (s[i] && s[i] == c && c != '\0')
+		i++;
+	return (ft_msplit(s, c, i, a));
+}
