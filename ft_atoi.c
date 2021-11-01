@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ftonita <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/02 00:14:48 by ftonita           #+#    #+#             */
+/*   Updated: 2021/11/02 00:14:50 by ftonita          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
 int	ft_isspace(char c)
@@ -9,29 +21,29 @@ int	ft_isspace(char c)
 
 int	ft_atoi(const char *str)
 {
-	int			i;
-	long int	n;
-	int			c[2];
+	int						i;
+	unsigned long long int	n;
+	int						s;
 
 	i = 0;
-	c[0] = 0;
-	c[1] = 0;
 	n = 0;
-	while (!ft_isdigit(str[i]))
+	s = 1;
+	while (ft_isspace(str[i]))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
-			c[0]++;
-		if (str[i] == '+')
-			c[1]++;
-		if ((!ft_isspace(str[i]) && str[i] != '-' && str[i] != '+')
-			|| (c[0] + c[1] > 1))
-			return (0);
+			s = -1;
 		i++;
 	}
-	i--;
-	while (ft_isdigit(str[++i]) && str[i])
+	while (ft_isdigit(str[i]))
+	{
 		n = n * 10 + ((long int)str[i] - 48);
-	if (c[0] == 1)
-		n = -n;
-	return (n);
+		i++;
+	}
+	if (n >= 9223372036854775807 && s == -1)
+		return (0);
+	if (n > 9223372036854775807 && s == 1)
+		return (-1);
+	return (n * s);
 }

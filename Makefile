@@ -28,28 +28,35 @@ SRCS = ft_isalpha.c \
 		ft_putendl_fd.c \
 		ft_substr.c \
 		ft_strjoin.c \
-		ft_strtrim.c
+		ft_strtrim.c \
+		ft_itoa.c \
+		ft_strmapi.c \
+		ft_striteri.c
 
 OBJ=$(SRCS:.c=.o)
 
 NAME = libft.a
 
-FLAGS = -Wall -Wextra -Werror -c -I.
+HEADER = libft.h
 
-$(CC) = gcc
+FLAGS = -Wall -Wextra -Werror -I.
 
-$(NAME):
-	@$(CC) $(FLAGS) $(SRCS)
-	@ar -rc $(NAME) $(OBJ)
-	@ranlib $(NAME)
+CC = gcc
+
+$(NAME): $(OBJ) $(HEADER)
+	ar rcs $(NAME) $?
+
+%.o: %.c $(HEADER)
+	$(CC) $(FLAGS) -c $< -o $@ 
+all: $(NAME)
 re: fclean $(NAME)
 clean:
-	@rm -f $(OBJ) $(NAME)
-fclean: 
-	@rm -f $(NAME)
+	rm -f $(OBJ)
+fclean: clean
+	rm -f $(NAME)
 rm:
-	@fclean all
+	fclean all
 list:
-	@ar -t $(NAME)
+	ar -t $(NAME)
 .PHONY:
-	@all clean fclean rm
+	all clean fclean rm
